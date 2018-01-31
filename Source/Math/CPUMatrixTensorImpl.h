@@ -423,8 +423,10 @@ void CPUMatrixTensorOpImpl(ElemType beta, const CPUMatrix<ElemType>& a, CPUMatri
         reductionOp != ElementWiseOperator::opElementwiseProduct)
         InvalidArgument("TensorOp: Unary reduction operations other than opMax, opMin, opSum, and opLogSum are not implemented.");
 
+#ifdef USE_MKL
     if (CPUMatrixSpecialUnaryTensorOpImpl(beta, a, o, alpha, op, reductionOp, offsets, regularOpDims, regularStrides, reducingOpDims, reducingStrides))
         return;
+#endif
 
 // TODO: Change the lambda to take a pointer and a number of elements, so that we can pass it 1 or 4 elements, in order for it to SSE-vectorize.
 #define CaseUnaryTensorOp(oper)                                                        \
@@ -455,8 +457,10 @@ void CPUMatrixTensorOpImpl(ElemType beta, const CPUMatrix<ElemType>& a, const CP
     if (reductionOp != ElementWiseOperator::opSum)
         InvalidArgument("TensorOp (binary): The only permitted binary reduction operation is opSum.");
 
+#ifdef USE_MKL
     if (CPUMatrixSpecialBinaryTensorOpImpl(beta, a, b, o, alpha, op, reductionOp, offsets, regularOpDims, regularStrides, reducingOpDims, reducingStrides))
         return;
+#endif
 
 #define CaseBinaryTensorOp(oper)                                                       \
     case ElementWiseOperator::op##oper:                                                \
@@ -486,8 +490,10 @@ void CPUMatrixTensorOpImpl(ElemType beta, const CPUMatrix<ElemType>& a, const CP
     if (reductionOp != ElementWiseOperator::opSum)
         InvalidArgument("TensorOp: The only permitted ternary reduction operation is opSum.");
 
+#ifdef USE_MKL
     if (CPUMatrixSpecialTernaryTensorOpImpl(beta, a, b, c, o, alpha, op, reductionOp, offsets, regularOpDims, regularStrides, reducingOpDims, reducingStrides))
         return;
+#endif
 
 #define CaseTernaryTensorOp(oper)                                                      \
     case ElementWiseOperator::op##oper:                                                \
