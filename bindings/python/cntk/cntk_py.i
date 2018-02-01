@@ -216,7 +216,7 @@ def dynamic_axes(self):
     {
         int rank = static_cast<int>(shape.Rank());
         auto result = PyTuple_New(rank);
-        for (int i = 0; i < rank; i++)
+        for (size_t i = 0; i < rank; i++)
         {
             int dim = static_cast<int>((&shape)->operator[](i));
             PyTuple_SetItem(result, rank-i-1, PyInt_FromLong(dim));

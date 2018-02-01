@@ -24,7 +24,7 @@ def create_reader(path, is_training, input_dim, label_dim):
 
 
 # Creates and trains a feedforward classification model for MNIST images
-def convnet_mnist(debug_output=False, epoch_size=6000, minibatch_size=64, max_epochs=40):
+def convnet_mnist(debug_output=False, epoch_size=60000, minibatch_size=64, max_epochs=40):
     image_height = 28
     image_width  = 28
     num_channels = 1
@@ -52,7 +52,6 @@ def convnet_mnist(debug_output=False, epoch_size=6000, minibatch_size=64, max_ep
     pe = C.metrics.classification_error(z, label_var)
 
     reader_train = create_reader(os.path.join(data_path, 'Train-28x28_cntk_text.txt'), True, input_dim, num_output_classes)
-    max_epochs = 40
 
     # Set learning parameters
     lr_per_sample    = [0.001]*10 + [0.0005]*10 + [0.0001]

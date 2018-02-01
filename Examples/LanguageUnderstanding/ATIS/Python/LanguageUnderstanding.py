@@ -161,7 +161,6 @@ def train(reader, model, max_epochs):
                                minibatch_size=minibatch_size, max_epochs=max_epochs, epoch_size=epoch_size,
                                parameter_learners=[learner],
                                callbacks=[progress_printer, progress_callback])
-    trainer.print_statistics()
     return progress.epoch_summaries[-1].loss, progress.epoch_summaries[-1].metric # return loss and metric from last epoch
 
 
@@ -186,7 +185,7 @@ def evaluate(reader, model):
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-e', '--epochs', help='total epochs', required=False, default='1')
+    parser.add_argument('-e', '--epochs', help='total epochs', required=False, default='8')
     parser.add_argument('-tensorboard_logdir', '--tensorboard_logdir',
                         help='Directory where TensorBoard logs should be created', required=False, default=None)
 

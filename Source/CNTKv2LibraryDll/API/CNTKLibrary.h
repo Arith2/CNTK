@@ -3031,7 +3031,7 @@ namespace CNTK
             std::vector<ptrdiff_t> sequenceBeginIndices(numOfSequences, 0);
             std::vector<size_t> sequenceLengths(numOfSequences, maxSequenceLen);
             GetSequenceStartsAndLengths(Mask(), sequenceBeginIndices, sequenceLengths, outputVariable.DynamicAxes().size());
-            for (size_t seqIndex = 0; seqIndex < numOfSequences; seqIndex++)
+            for (auto seqIndex = 0; seqIndex < numOfSequences; seqIndex++)
             {
                 if (sequenceBeginIndices[seqIndex] != 0)
                     RuntimeError("Currently, only sequence starting with SequenceBegin is supported.");
@@ -3213,7 +3213,7 @@ namespace CNTK
                                        const std::unordered_map<Variable, ValuePtr>& rootGradientValues,
                                        std::unordered_map<Variable, ValuePtr>& backPropagatedGradientValuesForInputs);
 
-        CNTK_API virtual void PrintStatistics() {}
+        CNTK_API virtual void PrintNodeTiming() {}
 
     protected:
         ///
@@ -5380,6 +5380,11 @@ namespace CNTK
             return m_progressWriters;
         }
 
+        ///
+        /// Prints per-node average timing per-minibatch
+        ///
+        CNTK_API virtual void PrintNodeTiming();
+
         CNTK_API virtual ~Evaluator() {}
 
     private:
@@ -5540,7 +5545,10 @@ namespace CNTK
         ///
         CNTK_API void SummarizeTrainingProgress();
 
-        CNTK_API void PrintStatistics();
+        ///
+        /// Prints per-node average timing per-minibatch
+        ///
+        CNTK_API virtual void PrintNodeTiming();
 
     private:
         template <typename T1, typename ...CtorArgTypes>

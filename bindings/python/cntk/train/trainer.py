@@ -74,9 +74,6 @@ class Trainer(cntk_py.Trainer):
         # transplant into this class instance
         self.__dict__ = trainer.__dict__
         
-    def print_statistics(self):
-        return super(Trainer, self).print_statistics()
-
     # TODO: bring this back once the design has been settled
     def _train_test_mb_map_args(self, *args, **kwargs):
         '''helper function for mimicking Python calling convention in train/test_minibatch()'''
@@ -335,3 +332,9 @@ class Trainer(cntk_py.Trainer):
         accumulators.
         '''
         return super(Trainer, self).summarize_test_progress()
+
+    def print_node_timing(self):
+        '''
+        Prints per-node average timing per-minibatch for each primitive function
+        '''
+        return super(Trainer, self).print_node_timing()

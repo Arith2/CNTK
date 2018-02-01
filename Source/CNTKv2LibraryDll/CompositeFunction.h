@@ -126,11 +126,11 @@ namespace CNTK
             return CompositeFunctionOpName;
         }
 
-        void PrintStatistics() override
+        void PrintNodeTiming() override
         {
             if (m_computationNetwork)
             {
-                m_computationNetwork->PrintNodeStatistics();
+                m_computationNetwork->PrintNodeTiming();
             }
         }
 

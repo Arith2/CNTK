@@ -86,7 +86,7 @@ void ComputationNetwork::ClearNetwork()
     m_pMBLayoutOfNetwork->Init(1, 0);
 }
 
-void ComputationNetwork::PrintNodeStatistics()
+void ComputationNetwork::PrintNodeTiming()
 {
     for (auto& iter : m_nameToNodeMap)
     {

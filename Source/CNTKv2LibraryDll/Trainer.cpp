@@ -337,11 +337,11 @@ namespace CNTK
         m_progressWriters.insert(progressWriters.begin(), progressWriters.end());
     }
 
-    void Trainer::PrintStatistics()
+    void Trainer::PrintNodeTiming()
     {
         if (m_combinedTrainingFunction)
         {
-            m_combinedTrainingFunction->PrintStatistics();
+            m_combinedTrainingFunction->PrintNodeTiming();
         }
     }
 

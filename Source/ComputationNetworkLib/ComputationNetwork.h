@@ -87,7 +87,7 @@ public:
 
     DEVICEID_TYPE GetDeviceId() const { return m_deviceId; }
 
-    void PrintNodeStatistics();
+    void PrintNodeTiming();
 
 protected:
     void ConstructFromRoots(DEVICEID_TYPE deviceId, std::deque<ComputationNodeBasePtr>&& roots, const map<ComputationNodeBasePtr, ComputationNodeBasePtr>& replacements);
