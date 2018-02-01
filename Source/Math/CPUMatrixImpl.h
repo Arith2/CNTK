@@ -2526,8 +2526,8 @@ CPUMatrix<ElemType>& CPUMatrix<ElemType>::AssignHardmaxOf(const CPUMatrix<ElemTy
                 }
             }
 
-            foreach_row (i, us)
-                us(i, j) = (i == maxI) ? 1.0f : 0.0f;
+            memset(us.Data() + j * a.GetNumRows(), 0, a.GetNumRows() * sizeof(ElemType));
+            us(maxI, j) = 1.0f;
         }
     }
     else
@@ -2547,8 +2547,8 @@ CPUMatrix<ElemType>& CPUMatrix<ElemType>::AssignHardmaxOf(const CPUMatrix<ElemTy
                 }
             }
 
-            foreach_column (j, us)
-                us(i, j) = (j == maxJ) ? 1.0f : 0.0f;
+            memset(us.Data() + i * a.GetNumCols(), 0, a.GetNumCols() * sizeof(ElemType));
+            us(i, maxJ) = 1.0f;
         }
     }
 
