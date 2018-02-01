@@ -1092,7 +1092,8 @@ class Function(cntk_py.Function):
 
     def print_node_timing(self):
         '''
-        Prints per-node average timing per-minibatch for each primitive function
+        Prints per-node average timing per-minibatch for each primitive function.
+        statistics would reset after print
         '''
         return super(Function, self).print_node_timing()
 

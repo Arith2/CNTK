@@ -692,8 +692,11 @@ template <class ElemType>
     // and make sure dimensions are what we expect
     VerifyDataSize(Value());
 
-    m_forwardBeginTime = std::chrono::system_clock::now();
-    m_forwardCount++;
+    if (Globals::ShouldEnableNodeTiming())
+    {
+        m_forwardBeginTime = std::chrono::system_clock::now();
+        m_forwardCount++;
+    }
 }
 
 template<class ElemType>
@@ -718,7 +721,10 @@ void ComputationNode<ElemType>::PrintForwardBackwardTime()
 template <class ElemType>
 /*virtual*/ void ComputationNode<ElemType>::EndForwardProp()
 {
-    m_forwardTime += (std::chrono::system_clock::now() - m_forwardBeginTime);
+    if (Globals::ShouldEnableNodeTiming())
+    {
+        m_forwardTime += (std::chrono::system_clock::now() - m_forwardBeginTime);
+    }
     
     Base::EndForwardProp();
 
@@ -766,15 +772,21 @@ template <class ElemType>
                 VerifyValueShape(InputRef(i));
         }
 
-        m_backwardBeginTime = std::chrono::system_clock::now();
-        m_backwardCount++;
+        if (Globals::ShouldEnableNodeTiming())
+        {
+            m_backwardBeginTime = std::chrono::system_clock::now();
+            m_backwardCount++;
+        }
     }
 }
 
 template <class ElemType>
 /*virtual*/ void ComputationNode<ElemType>::EndBackprop()
 {
-    m_backwardTime += (std::chrono::system_clock::now() - m_backwardBeginTime);
+    if (Globals::ShouldEnableNodeTiming())
+    {
+        m_backwardTime += (std::chrono::system_clock::now() - m_backwardBeginTime);
+    }
 
     Base::EndBackprop();
 

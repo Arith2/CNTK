@@ -336,5 +336,6 @@ class Trainer(cntk_py.Trainer):
     def print_node_timing(self):
         '''
         Prints per-node average timing per-minibatch for each primitive function
+        statistics would reset after print
         '''
         return super(Trainer, self).print_node_timing()
