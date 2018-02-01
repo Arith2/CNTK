@@ -102,6 +102,9 @@ struct /*interface*/ IComputationNode
     virtual void ForwardProp(const FrameRange&) = 0; // forward prop for one minibatch
     virtual void EndForwardProp() = 0;               // called after last iteration step of ForwardProp()
 
+    virtual void BeginTiming(bool backward) = 0;      // called before Forward/Backward for node timing
+    virtual void EndTiming(bool backward) = 0;        // called after Foward/Backward for node timing   
+
     virtual void PostForwardAndBackProp() {} // Optional: Post forward and backprop prop for one minibatch, this will be called in a second 
                                              //           looping on the graph, after the backward pass finish. Or after forward pass in inference
                                              //           mode.
@@ -786,6 +789,9 @@ public:
         fprintf(stderr, "EndBackprop: %ls %ls operation\n", NodeName().c_str(), OperationName().c_str());
 #endif
     }
+
+    virtual void /*IComputationNode::*/ BeginTiming(bool) override {}
+    virtual void /*IComputationNode::*/ EndTiming(bool) override {}
 
     // check whether a node is out of date w.r.t. its children, for lazy evaluation
     // If this returns true, node must be evaluated to update m_value.
@@ -1778,6 +1784,10 @@ public:
 
     virtual void /*IComputationNode::*/ EndBackprop() override;
 
+    virtual void /*IComputationNode::*/ BeginTiming(bool) override;
+
+    virtual void /*IComputationNode::*/ EndTiming(bool) override;
+
     // this is the entry point from Network; while it will call virtual BackpropTo() into the actual node implementation
     // TODO: move to -Base (or -Network?)
     void Backprop(const FrameRange& fr, bool childrenInThisLoop, bool childrenInOuterLoop) override;
@@ -2163,13 +2173,27 @@ protected:
 
     MatrixType m_preferredGradientMatrixType = UNDETERMINED;
 
-    std::chrono::system_clock::time_point m_forwardBeginTime;
-    std::chrono::system_clock::time_point m_backwardBeginTime;
+    enum TimingPhase
+    {
+        TimingPhase_Forward = 0,
+        TimingPhase_Backward,
+        TimingPhase_Total
+    };
 
-    int m_forwardCount = 0;
-    int m_backwardCount = 0;
-    std::chrono::duration<float> m_forwardTime = std::chrono::duration<float>(0);
-    std::chrono::duration<float> m_backwardTime = std::chrono::duration<float>(0);
+    struct Timing
+    {
+        std::chrono::system_clock::time_point beginTime;
+        int count = 0;
+        std::chrono::duration<float> duration = std::chrono::duration<float>(0);
+        long long profilerId;
+        std::string profilerName;
+
+        void Reset()
+        {
+            duration = std::chrono::duration<float>(0);
+            count = 0;
+        }
+    } m_timing[TimingPhase_Total];
 };
 
 // convenience wrapper for ComputationNode::New()
