@@ -801,7 +801,7 @@ template <class ElemType>
     {
         static char name[256];
         sprintf_s(name, _countof(name), "%S%s", m_nodeName.c_str(), postfixes[phase]);
-        timiARng.profilerName = name;
+        timing.profilerName = name;
     }
     ProfilerTimeEnd(timing.profilerId, timing.profilerName.c_str());
 }
