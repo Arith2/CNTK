@@ -43,6 +43,7 @@ bool CPUMatrixSpecialBinaryTensorOpImpl<float>(float beta, const CPUMatrix<float
     {
         if (a.GetNumRows() == b.GetNumRows() &&
             a.GetNumRows() == o.GetNumRows() &&
+            a.GetNumRows() > 1 &&
             ((a.GetNumCols() == 1 && o.GetNumCols() == b.GetNumCols()) ||
             (b.GetNumCols() == 1 && o.GetNumCols() == a.GetNumCols())))
         {
@@ -77,6 +78,23 @@ bool CPUMatrixSpecialBinaryTensorOpImpl<float>(float beta, const CPUMatrix<float
                 return true;
             case ElementWiseOperator::opElementwiseProduct:
                 vsMul(N, a.Data(), b.Data(), o.Data());
+                return true;
+            }
+        }
+        else if ((a.GetNumElements() == 1 && o.GetNumElements() == b.GetNumElements()) ||
+                 (b.GetNumElements() == 1 && o.GetNumElements() == a.GetNumElements()))
+        {
+            int N = (int)o.GetNumElements();
+            float scalar = (a.GetNumElements() == 1 ? a.Data()[0] : b.Data()[0]);
+            float* input = (a.GetNumElements() == 1 ? b.Data() : a.Data());
+            switch (op)
+            {
+            case ElementWiseOperator::opElementwiseProduct:
+                cblas_saxpby(N, scalar, input, 1, 0.0f, o.Data(), 1);
+                return true;
+            case ElementWiseOperator::opSum:
+                memcpy(o.Data(), input, N * sizeof(float));
+                cblas_saxpby(N, 1.0f, &scalar, 0, 1.0f, o.Data(), 1);
                 return true;
             }
         }
