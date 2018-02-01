@@ -79,6 +79,9 @@ bool CPUMatrixSpecialBinaryTensorOpImpl<float>(float beta, const CPUMatrix<float
             case ElementWiseOperator::opElementwiseProduct:
                 vsMul(N, a.Data(), b.Data(), o.Data());
                 return true;
+            case ElementWiseOperator::opDifference:
+                vsSub(N, a.Data(), b.Data(), o.Data());
+                return true;
             }
         }
         else if ((a.GetNumElements() == 1 && o.GetNumElements() == b.GetNumElements()) ||
