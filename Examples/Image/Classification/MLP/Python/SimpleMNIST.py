@@ -109,7 +109,10 @@ def simple_mnist(tensorboard_logdir=None):
     }
 
     # Test data for trained model
-    C.debugging.debug.set_node_timing(True)
+    C.debugging.start_profiler()
+    C.debugging.enable_profiler()
+    C.debugging.set_node_timing(True)
+
     test_minibatch_size = 1024
     num_samples = 10000
     num_minibatches_to_test = num_samples / test_minibatch_size
@@ -119,7 +122,7 @@ def simple_mnist(tensorboard_logdir=None):
         eval_error = trainer.test_minibatch(mb)
         test_result = test_result + eval_error
 
-    trainer.summarize_test_progress()
+    C.debugging.stop_profiler()
     trainer.print_node_timing()
 
     # Average of evaluation errors of all test minibatches
