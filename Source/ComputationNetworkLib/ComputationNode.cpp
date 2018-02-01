@@ -800,8 +800,8 @@ template <class ElemType>
     if (timing.profilerName.length() != m_nodeName.length() + strlen(postfixes[phase]))
     {
         static char name[256];
-        sprintf_s(name, "%S%s", m_nodeName.c_str(), postfixes[phase]);
-        timing.profilerName = name;
+        sprintf_s(name, _countof(name), "%S%s", m_nodeName.c_str(), postfixes[phase]);
+        timiARng.profilerName = name;
     }
     ProfilerTimeEnd(timing.profilerId, timing.profilerName.c_str());
 }

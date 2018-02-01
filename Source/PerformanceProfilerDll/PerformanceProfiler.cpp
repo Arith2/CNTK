@@ -565,7 +565,7 @@ void ProfilerGenerateDetailFile(const std::wstring& fileName)
         CustomEventRecord* eventRecord = (CustomEventRecord*)eventPtr;
         eventPtr += sizeof(CustomEventRecord);
 
-        fprintfOrDie(f, "%s    {\"pid\":%u, \"tid\":%u, \"name\":\"%s\", \"cat\":\"PERF\", \"ph\":\"B\", \"ts\":%llu}",
+        fprintfOrDie(f, "%s  {\"pid\":%u, \"tid\":%u, \"name\":\"%s\", \"cat\":\"PERF\", \"ph\":\"B\", \"ts\":%llu}",
             firstRecord ? "" : ",\n",
             pid,
             eventRecord->threadId,
@@ -573,7 +573,7 @@ void ProfilerGenerateDetailFile(const std::wstring& fileName)
             (unsigned long long)(1000000.0 * TicksToSeconds(eventRecord->beginClock - g_profilerState->startClock)));
 
         firstRecord = false;
-        fprintfOrDie(f, ",\n    {\"pid\":%u, \"tid\":%u, \"name\":\"%s\", \"cat\":\"PERF\", \"ph\":\"E\", \"ts\":%llu}",
+        fprintfOrDie(f, ",\n  {\"pid\":%u, \"tid\":%u, \"name\":\"%s\", \"cat\":\"PERF\", \"ph\":\"E\", \"ts\":%llu}",
             pid,
             eventRecord->threadId,
             descriptionStr,
