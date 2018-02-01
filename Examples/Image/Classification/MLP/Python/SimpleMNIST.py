@@ -72,7 +72,7 @@ def simple_mnist(tensorboard_logdir=None):
     # Training config
     minibatch_size = 64
     num_samples_per_sweep = 60000
-    num_sweeps_to_train_with = 1
+    num_sweeps_to_train_with = 10
 
     # Instantiate progress writers.
     #training_progress_output_freq = 100
