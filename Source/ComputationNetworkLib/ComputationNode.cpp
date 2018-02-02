@@ -12,8 +12,10 @@
 
 #ifndef  CNTK_UWP
 #include "PerformanceProfiler.h"
+#ifdef _WIN32
 #define PERFORMANCE_PROFILER_LIB_NAME "Cntk.PerformanceProfiler-"##CNTK_COMPONENT_VERSION##".lib"
 #pragma comment(lib, PERFORMANCE_PROFILER_LIB_NAME)
+#endif
 #endif
 
 #ifndef let
