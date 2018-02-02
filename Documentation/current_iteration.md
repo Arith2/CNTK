@@ -3,6 +3,7 @@
 ## Change profiler details output format to be chrome://tracing
 
 ## Enable per-node timing. Working example [here](../Examples/Image/Classification/MLP/Python/SimpleMNIST.py)
+- per-node timing creates items in profiler details when profiler is enabled.
 - usage in Python.
 ```
 import cntk as C
@@ -13,5 +14,3 @@ C.debugging.enable_profiler() # optional
 <trainer|evaluator|function>.print_node_timing()
 C.debugging.stop_profiler()
 ```
-
-### per-node timing creates items in profiler details when profiler is enabled. 
