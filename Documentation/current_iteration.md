@@ -2,7 +2,7 @@
 
 ## Change profiler details output format to be chrome://tracing
 
-## Enable per-node timing. Working example [here](/Examples/Image/Classification/MLP/Python/SimpleMNIST.py)
+## Enable per-node timing. Working example [here](../Examples/Image/Classification/MLP/Python/SimpleMNIST.py)
 - usage in Python.
 ```
 import cntk as C
