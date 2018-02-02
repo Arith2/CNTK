@@ -9,7 +9,12 @@
 #include "InputAndParamNodes.h"
 #include "ComputationNetworkBuilder.h" // TODO: We should only pull in NewComputationNodeFromConfig(). Nodes should not know about network at large.
 #include "TensorShape.h"
+
+#ifndef  CNTK_UWP
 #include "PerformanceProfiler.h"
+#define PERFORMANCE_PROFILER_LIB_NAME "Cntk.PerformanceProfiler-"##CNTK_COMPONENT_VERSION##".lib"
+#pragma comment(lib, PERFORMANCE_PROFILER_LIB_NAME)
+#endif
 
 #ifndef let
 #define let const auto
@@ -779,7 +784,9 @@ template <class ElemType>
     auto& timing = m_timing[phase];
     timing.beginTime = std::chrono::system_clock::now();
     timing.count++;
+#ifndef  CNTK_UWP
     timing.profilerId = ProfilerTimeBegin();
+#endif
 }
 
 template <class ElemType>
@@ -787,6 +794,11 @@ template <class ElemType>
 {
     if (!Globals::ShouldEnableNodeTiming()) return;
 
+    int phase = (backward ? (int)TimingPhase_Backward : (int)TimingPhase_Forward);
+    auto& timing = m_timing[phase];
+    timing.duration += (std::chrono::system_clock::now() - timing.beginTime);
+
+#ifndef  CNTK_UWP
     // the order must match enum
     static const char* postfixes[TimingPhase_Total] =
     {
@@ -794,9 +806,6 @@ template <class ElemType>
         "Backward",
     };
 
-    int phase = (backward ? (int)TimingPhase_Backward : (int)TimingPhase_Forward);
-    auto& timing = m_timing[phase];
-    timing.duration += (std::chrono::system_clock::now() - timing.beginTime);
     if (timing.profilerName.length() != m_nodeName.length() + strlen(postfixes[phase]))
     {
         static char name[256];
@@ -804,6 +813,7 @@ template <class ElemType>
         timing.profilerName = name;
     }
     ProfilerTimeEnd(timing.profilerId, timing.profilerName.c_str());
+#endif
 }
 
 template<class ElemType>
